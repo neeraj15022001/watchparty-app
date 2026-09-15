@@ -23,7 +23,10 @@
    - Created modern responsive landing page in `docs/` (`index.html`, `style.css`, `app.js`).
    - Integrated live Changelog timeline documenting v1.0.0 and v1.1.0 releases.
    - Added GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) for automatic deployment to GitHub Pages.
-4. **Git Commits:**
+4. **Frontend UI Redesign & Refactoring:**
+   - Applied `@openai-frontend-design` methodology (`SKILL (1).md`) to transform `public/` into an agency-grade 10/10 design.
+   - Implemented top bar with room pill and 1-click invite link copy, segmented media source selector, ambient glow cinema stage, floating glassmorphism player controls, real-time voice energy waveform visualizer, active speaker glowing borders, and modern room chat stream with avatar initials and timestamps.
+5. **Git Commits:**
    - Commit `ff03c89`: Initial commit of core platform (`server.py`, `public/`, `extension/`, `README.md`).
    - Commit `670628a`: Added banner, governance, AI disclosure, and GitHub Pages site.
 

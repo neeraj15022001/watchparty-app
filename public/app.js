@@ -6,7 +6,7 @@
  * 3. High-Precision Video Player Sync (Smooth Rate Steering & Hard Seek)
  * 4. Local File Streaming & Path Loader (HTTP Range & Chunked Upload)
  * 5. WebRTC Peer-to-Peer Mesh (Voice & Video Chat)
- * 6. Web Audio API Smart Voice Ducking
+ * 6. Web Audio API Smart Voice Ducking & Real-Time Waveform Visualizer
  */
 
 (function () {
@@ -38,7 +38,9 @@
   let audioCtx = null;
   let duckingAmount = 0.4;
   let isDucking = false;
+  let duckingEnabled = true;
   let duckingTimeout = null;
+  let activeAudioAnalysers = [];
 
   // DOM Elements
   const roomDisplay = document.getElementById('room-display');
@@ -48,8 +50,11 @@
   const overlayMsg = document.getElementById('overlay-msg');
   const overlayText = document.getElementById('overlay-text');
   const playPauseBtn = document.getElementById('play-pause-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
   const muteBtn = document.getElementById('mute-btn');
   const volumeSlider = document.getElementById('volume-slider');
+  const volumePercent = document.getElementById('volume-percent');
   const progressContainer = document.getElementById('progress-container');
   const currentProgress = document.getElementById('current-progress');
   const bufferedBar = document.getElementById('buffered-bar');
@@ -72,7 +77,9 @@
   const tabContents = document.querySelectorAll('.tab-content');
   const duckingAmountSlider = document.getElementById('ducking-amount');
   const duckingAmountLabel = document.getElementById('ducking-amount-label');
-  const duckingLed = document.getElementById('ducking-indicator');
+  const duckingStatusPill = document.getElementById('ducking-indicator');
+  const duckingEnableToggle = document.getElementById('ducking-enable-toggle');
+  const waveformCanvas = document.getElementById('ducking-waveform');
   const memberCount = document.getElementById('member-count');
   const toggleMicBtn = document.getElementById('toggle-mic-btn');
   const toggleCamBtn = document.getElementById('toggle-cam-btn');
@@ -84,8 +91,8 @@
 
   // Initialize
   function init() {
-    roomDisplay.textContent = `Room: ${roomId}`;
-    userNameBadge.textContent = myName;
+    roomDisplay.textContent = roomId;
+    userNameBadge.textContent = myName.replace('User_', 'U');
 
     setupTabs();
     setupWebSocket();
@@ -94,13 +101,17 @@
     setupWebRTC();
     setupDucking();
     setupChat();
+    setupWaveformVisualizer();
 
     copyRoomBtn.addEventListener('click', () => {
       const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomId}`;
       navigator.clipboard.writeText(shareUrl).then(() => {
-        const orig = copyRoomBtn.textContent;
-        copyRoomBtn.textContent = '✓ Copied!';
-        setTimeout(() => (copyRoomBtn.textContent = orig), 2000);
+        const textSpan = copyRoomBtn.querySelector('span');
+        if (textSpan) {
+          const orig = textSpan.textContent;
+          textSpan.textContent = 'Copied!';
+          setTimeout(() => (textSpan.textContent = orig), 2000);
+        }
       });
     });
   }
@@ -189,7 +200,7 @@
 
   function updateMemberList(members) {
     if (!members) return;
-    memberCount.textContent = members.length;
+    if (memberCount) memberCount.textContent = members.length;
   }
 
   // 2. Playback Synchronization Engine
@@ -199,13 +210,13 @@
 
     muteBtn.addEventListener('click', () => {
       mainVideo.muted = !mainVideo.muted;
-      muteBtn.textContent = mainVideo.muted ? '🔇' : '🔊';
+      updateVolumeDisplay();
     });
 
     volumeSlider.addEventListener('input', (e) => {
       mainVideo.volume = parseFloat(e.target.value);
       mainVideo.muted = false;
-      muteBtn.textContent = mainVideo.volume === 0 ? '🔇' : '🔊';
+      updateVolumeDisplay();
     });
 
     mainVideo.addEventListener('timeupdate', () => {
@@ -252,12 +263,14 @@
     });
 
     mainVideo.addEventListener('play', () => {
+      updatePlayPauseIcons(true);
       if (isProgrammatic) return;
       showOverlay('Playing');
       broadcastSync('media_play');
     });
 
     mainVideo.addEventListener('pause', () => {
+      updatePlayPauseIcons(false);
       if (isProgrammatic) return;
       showOverlay('Paused');
       broadcastSync('media_pause');
@@ -267,6 +280,25 @@
       if (isProgrammatic) return;
       broadcastSync('media_seek');
     });
+  }
+
+  function updatePlayPauseIcons(isPlaying) {
+    if (playIcon && pauseIcon) {
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      }
+    }
+  }
+
+  function updateVolumeDisplay() {
+    const vol = mainVideo.muted ? 0 : mainVideo.volume;
+    if (volumePercent) {
+      volumePercent.textContent = `${Math.round(vol * 100)}%`;
+    }
   }
 
   function togglePlay() {
@@ -338,9 +370,11 @@
     if (state.is_playing && mainVideo.paused) {
       mainVideo.play().catch(e => console.log('Autoplay deferred:', e));
       showOverlay('Playing');
+      updatePlayPauseIcons(true);
     } else if (!state.is_playing && !mainVideo.paused) {
       mainVideo.pause();
       showOverlay('Paused');
+      updatePlayPauseIcons(false);
     }
 
     setTimeout(() => {
@@ -350,13 +384,16 @@
 
   function updateSyncStatus(driftSec) {
     const driftMs = Math.round(driftSec * 1000);
-    syncDriftLabel.textContent = `Drift: ${driftMs}ms`;
+    syncDriftLabel.textContent = `<${Math.max(20, driftMs)}ms Sync`;
     if (driftMs < 100) {
-      syncStatus.style.color = 'var(--success)';
+      syncStatus.style.color = '#4ade80';
+      syncStatus.style.borderColor = 'rgba(34, 197, 94, 0.3)';
     } else if (driftMs < 500) {
-      syncStatus.style.color = 'var(--warning)';
+      syncStatus.style.color = 'var(--status-warning)';
+      syncStatus.style.borderColor = 'rgba(245, 158, 11, 0.3)';
     } else {
-      syncStatus.style.color = 'var(--danger)';
+      syncStatus.style.color = 'var(--status-danger)';
+      syncStatus.style.borderColor = 'rgba(239, 68, 68, 0.3)';
     }
   }
 
@@ -365,9 +402,10 @@
   }
 
   function formatTime(seconds) {
-    const min = Math.floor(seconds / 60);
+    const h = Math.floor(seconds / 3600);
+    const min = Math.floor((seconds % 3600) / 60);
     const sec = Math.floor(seconds % 60);
-    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    return `${h.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   }
 
   function showOverlay(text) {
@@ -378,7 +416,6 @@
 
   // 3. Local File Engine (Chunked Streaming Upload & Local Path Loader)
   function setupLocalFileEngine() {
-    // A. File Picker -> Streamed upload to server for instant multi-user range streaming
     localFileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -409,7 +446,6 @@
             selectedFileName.textContent = `Streaming: ${res.filename} (Native 4K / Range Streamed)`;
             setTimeout(() => uploadProgressContainer.classList.add('hidden'), 1500);
 
-            // Load media source locally and broadcast to all room peers
             loadMediaSource(res.url, 'url', res.filename);
           } catch (err) {
             selectedFileName.textContent = `Error parsing upload response`;
@@ -426,7 +462,6 @@
       xhr.send(file);
     });
 
-    // B. Direct Local Path Loader -> Instant symlink on the machine
     loadPathBtn.addEventListener('click', () => {
       const pathVal = localPathInput.value.trim();
       if (!pathVal) return;
@@ -458,9 +493,10 @@
     try {
       localStream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-        video: { width: 320, height: 180, frameRate: 24 }
+        video: { width: 320, height: 240, frameRate: 24 }
       });
       localVideo.srcObject = localStream;
+      attachDuckingMonitor(localStream, 'local-video-card');
     } catch (e) {
       console.warn('[WebRTC] Camera/Mic access denied or unavailable:', e);
       addSystemMessage('Microphone/Camera access not granted. Running in spectator mode.');
@@ -472,7 +508,9 @@
       if (audioTrack) {
         audioTrack.enabled = !audioTrack.enabled;
         toggleMicBtn.classList.toggle('active', audioTrack.enabled);
-        toggleMicBtn.textContent = audioTrack.enabled ? '🎤 Mic' : '🔇 Muted';
+        toggleMicBtn.classList.toggle('muted', !audioTrack.enabled);
+        const micText = toggleMicBtn.querySelector('span');
+        if (micText) micText.textContent = audioTrack.enabled ? 'Mic' : 'Muted';
       }
     });
 
@@ -482,7 +520,9 @@
       if (videoTrack) {
         videoTrack.enabled = !videoTrack.enabled;
         toggleCamBtn.classList.toggle('active', videoTrack.enabled);
-        toggleCamBtn.textContent = videoTrack.enabled ? '📹 Cam' : '🚫 Cam Off';
+        toggleCamBtn.classList.toggle('muted', !videoTrack.enabled);
+        const camText = toggleCamBtn.querySelector('span');
+        if (camText) camText.textContent = videoTrack.enabled ? 'Cam' : 'Cam Off';
       }
     });
   }
@@ -508,7 +548,7 @@
     pc.ontrack = (e) => {
       const remoteStream = e.streams[0];
       attachRemoteStream(targetId, remoteStream);
-      attachDuckingMonitor(remoteStream);
+      attachDuckingMonitor(remoteStream, `peer-card-${targetId}`);
     };
 
     return pc;
@@ -565,12 +605,20 @@
       vid.playsInline = true;
       vid.srcObject = stream;
 
-      const badge = document.createElement('div');
-      badge.className = 'stream-badge';
-      badge.textContent = `Friend`;
+      const meta = document.createElement('div');
+      meta.className = 'video-card-meta';
+      meta.innerHTML = `
+        <div class="user-info">
+          <span class="meta-name">Friend_${peerId.slice(0, 4)}</span>
+          <span class="meta-status" id="status-${peerId}">Active</span>
+        </div>
+        <div class="meta-mic-icon active" id="mic-icon-${peerId}">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path></svg>
+        </div>
+      `;
 
       card.appendChild(vid);
-      card.appendChild(badge);
+      card.appendChild(meta);
       videoGrid.appendChild(card);
     }
   }
@@ -584,15 +632,25 @@
     if (card) card.remove();
   }
 
-  // 5. Web Audio Smart Voice Ducking
+  // 5. Web Audio Smart Voice Ducking & Visualizer
   function setupDucking() {
     duckingAmountSlider.addEventListener('input', (e) => {
       duckingAmount = parseFloat(e.target.value);
       duckingAmountLabel.textContent = `${Math.round(duckingAmount * 100)}%`;
     });
+
+    if (duckingEnableToggle) {
+      duckingEnableToggle.addEventListener('change', (e) => {
+        duckingEnabled = e.target.checked;
+        if (!duckingEnabled) {
+          isDucking = false;
+          duckingStatusPill.classList.remove('active');
+        }
+      });
+    }
   }
 
-  function attachDuckingMonitor(stream) {
+  function attachDuckingMonitor(stream, cardId = null) {
     if (!audioCtx) {
       const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
       audioCtx = new AudioCtxClass();
@@ -601,41 +659,59 @@
       audioCtx.resume();
     }
 
-    const sourceNode = audioCtx.createMediaStreamSource(stream);
-    const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 256;
-    sourceNode.connect(analyser);
+    try {
+      const sourceNode = audioCtx.createMediaStreamSource(stream);
+      const analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      sourceNode.connect(analyser);
 
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      activeAudioAnalysers.push({ analyser, cardId });
 
-    function checkVocalActivity() {
-      analyser.getByteFrequencyData(dataArray);
-      let sum = 0;
-      for (let i = 0; i < dataArray.length; i++) {
-        sum += dataArray[i];
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      function checkVocalActivity() {
+        analyser.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          sum += dataArray[i];
+        }
+        const avg = sum / dataArray.length;
+
+        // Card glow for active speaker
+        if (cardId) {
+          const cardEl = document.getElementById(cardId);
+          if (cardEl) {
+            if (avg > 25) {
+              cardEl.classList.add('active-speaker');
+            } else {
+              cardEl.classList.remove('active-speaker');
+            }
+          }
+        }
+
+        if (avg > 25 && duckingEnabled) {
+          triggerDucking();
+        }
+        requestAnimationFrame(checkVocalActivity);
       }
-      const avg = sum / dataArray.length;
-
-      if (avg > 25) {
-        triggerDucking();
-      }
-      requestAnimationFrame(checkVocalActivity);
+      checkVocalActivity();
+    } catch (err) {
+      console.warn('[Audio] Could not attach ducking monitor:', err);
     }
-    checkVocalActivity();
   }
 
   function triggerDucking() {
     clearTimeout(duckingTimeout);
     if (!isDucking) {
       isDucking = true;
-      duckingLed.classList.add('active');
+      duckingStatusPill.classList.add('active');
       const targetVolume = Math.max(0.1, mainVideo.volume * (1.0 - duckingAmount));
       smoothVolumeTransition(mainVideo.volume, targetVolume, 150);
     }
 
     duckingTimeout = setTimeout(() => {
       isDucking = false;
-      duckingLed.classList.remove('active');
+      duckingStatusPill.classList.remove('active');
       const baseVolume = parseFloat(volumeSlider.value);
       smoothVolumeTransition(mainVideo.volume, baseVolume, 300);
     }, 600);
@@ -650,11 +726,76 @@
     const timer = setInterval(() => {
       currentStep++;
       mainVideo.volume = Math.min(1.0, Math.max(0, mainVideo.volume + delta));
+      updateVolumeDisplay();
       if (currentStep >= steps) {
         mainVideo.volume = to;
+        updateVolumeDisplay();
         clearInterval(timer);
       }
     }, stepTime);
+  }
+
+  function setupWaveformVisualizer() {
+    if (!waveformCanvas) return;
+    const ctx = waveformCanvas.getContext('2d');
+    let angle = 0;
+
+    function renderWave() {
+      const width = waveformCanvas.width;
+      const height = waveformCanvas.height;
+      ctx.clearRect(0, 0, width, height);
+
+      // Gradient stroke
+      ctx.lineWidth = 2.5;
+      const grad = ctx.createLinearGradient(0, 0, width, 0);
+      grad.addColorStop(0, '#38bdf8');
+      grad.addColorStop(0.5, '#818cf8');
+      grad.addColorStop(1, '#c084fc');
+      ctx.strokeStyle = grad;
+      ctx.shadowColor = 'rgba(56, 189, 248, 0.45)';
+      ctx.shadowBlur = 8;
+
+      ctx.beginPath();
+
+      // Check if any audio analyser has live energy
+      let liveData = null;
+      for (const item of activeAudioAnalysers) {
+        const arr = new Uint8Array(item.analyser.frequencyBinCount);
+        item.analyser.getByteFrequencyData(arr);
+        let s = 0;
+        for (let i = 0; i < arr.length; i++) s += arr[i];
+        if (s / arr.length > 5) {
+          liveData = arr;
+          break;
+        }
+      }
+
+      if (liveData) {
+        const sliceWidth = width / liveData.length;
+        let x = 0;
+        for (let i = 0; i < liveData.length; i++) {
+          const v = liveData[i] / 128.0;
+          const y = (v * height) / 2;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+          x += sliceWidth;
+        }
+      } else {
+        // Idle ambient sine wave
+        angle += 0.04;
+        const numPoints = 40;
+        const dx = width / numPoints;
+        for (let i = 0; i <= numPoints; i++) {
+          const y = (height / 2) + Math.sin(angle + i * 0.35) * 5;
+          if (i === 0) ctx.moveTo(i * dx, y);
+          else ctx.lineTo(i * dx, y);
+        }
+      }
+
+      ctx.stroke();
+      requestAnimationFrame(renderWave);
+    }
+    renderWave();
   }
 
   // 6. Chat System
@@ -670,30 +811,60 @@
         chatInput.value = '';
       }
     });
+
+    // Emoji reaction buttons
+    document.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        chatInput.value += btn.dataset.emoji;
+        chatInput.focus();
+      });
+    });
   }
 
   function addChatMessage(sender, text, isMe) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'chat-message';
+    const msgItem = document.createElement('div');
+    msgItem.className = 'chat-message-item';
 
-    const senderSpan = document.createElement('span');
-    senderSpan.className = 'msg-sender';
-    senderSpan.textContent = isMe ? 'You' : sender;
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-sender-avatar';
+    avatar.textContent = (sender || 'U').charAt(0).toUpperCase();
 
-    const textSpan = document.createElement('span');
-    textSpan.className = 'msg-text';
-    textSpan.textContent = text;
+    const bubbleContent = document.createElement('div');
+    bubbleContent.className = 'chat-bubble-content';
 
-    msgDiv.appendChild(senderSpan);
-    msgDiv.appendChild(textSpan);
-    chatFeed.appendChild(msgDiv);
+    const metaRow = document.createElement('div');
+    metaRow.className = 'chat-meta-row';
+
+    const senderName = document.createElement('span');
+    senderName.className = 'chat-sender-name';
+    senderName.textContent = isMe ? 'You' : sender;
+
+    const timestamp = document.createElement('span');
+    timestamp.className = 'chat-timestamp';
+    const now = new Date();
+    timestamp.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    metaRow.appendChild(senderName);
+    metaRow.appendChild(timestamp);
+
+    const textBubble = document.createElement('div');
+    textBubble.className = 'chat-text-bubble';
+    textBubble.textContent = text;
+
+    bubbleContent.appendChild(metaRow);
+    bubbleContent.appendChild(textBubble);
+
+    msgItem.appendChild(avatar);
+    msgItem.appendChild(bubbleContent);
+
+    chatFeed.appendChild(msgItem);
     chatFeed.scrollTop = chatFeed.scrollHeight;
   }
 
   function addSystemMessage(text) {
     const div = document.createElement('div');
-    div.className = 'system-message';
-    div.textContent = text;
+    div.className = 'chat-system-entry';
+    div.innerHTML = `<span>${text}</span>`;
     chatFeed.appendChild(div);
     chatFeed.scrollTop = chatFeed.scrollHeight;
   }

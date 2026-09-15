@@ -7,176 +7,294 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="app" class="cinema-layout">
-    <!-- Top Bar -->
+  <div id="app" class="cinema-app-layout">
+    <!-- Top Navigation Bar -->
     <header class="top-nav">
-      <div class="logo-area">
-        <span class="brand-badge">PRO</span>
-        <h1>WatchParty</h1>
-      </div>
+      <div class="nav-left">
+        <div class="brand-logo">
+          <svg class="brand-mark" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 7C4 5.34315 5.34315 4 7 4H21C22.6569 4 24 5.34315 24 7V21C24 22.6569 22.6569 24 21 24H7C5.34315 24 4 22.6569 4 21V7Z" fill="#131622" stroke="#232738" stroke-width="1.5"/>
+            <path d="M7 9.5L10.5 18.5L14 11.5L17.5 18.5L21 9.5" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="7" y1="9.5" x2="21" y2="18.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38bdf8"/>
+                <stop offset="1" stop-color="#818cf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="brand-name">WatchParty <span class="brand-highlight">Pro</span></span>
+        </div>
 
-      <div class="room-info">
-        <span class="status-indicator online"></span>
-        <span id="room-display">Room: Connecting...</span>
-        <button id="copy-room-btn" class="btn btn-secondary btn-sm" title="Copy Invite Link">
-          🔗 Copy Link
+        <div class="room-pill">
+          <span class="room-label">Room:</span>
+          <span id="room-display" class="room-code">Connecting...</span>
+        </div>
+
+        <button id="copy-room-btn" class="btn-copy-invite" title="Copy Invite Link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+          <span>Copy Invite Link</span>
         </button>
       </div>
 
-      <div class="user-profile">
-        <span id="user-name-badge">Viewer</span>
+      <div class="nav-right">
+        <div class="live-status-pill">
+          <span class="live-dot"></span>
+          <span>Live</span>
+        </div>
+
+        <div class="occupancy-pill" title="Participants in room">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span id="member-count">1</span>/4
+        </div>
+
+        <div class="user-avatar-btn" title="Your Profile">
+          <span id="user-name-badge" class="avatar-initials">U</span>
+        </div>
       </div>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="main-content">
-      <!-- Theater Center Stage -->
+    <!-- Main App Split Body -->
+    <main class="main-body">
+      <!-- Left: Cinema Center Stage -->
       <section class="theater-stage">
-        <!-- Media Source Bar -->
-        <div class="source-bar">
-          <div class="source-tabs">
-            <button class="tab-btn active" data-tab="url-mode">🌐 Video URL</button>
-            <button class="tab-btn" data-tab="file-mode">📁 Local File & Path</button>
-            <button class="tab-btn" data-tab="ott-mode">🍿 OTT Sync (Netflix / Prime)</button>
+        <!-- Segmented Source Selector -->
+        <div class="source-selector-container">
+          <div class="segmented-control">
+            <button class="tab-btn active" data-tab="url-mode">URL</button>
+            <button class="tab-btn" data-tab="file-mode">Local File</button>
+            <button class="tab-btn" data-tab="ott-mode">OTT Sync</button>
           </div>
 
-          <div class="tab-content" id="url-mode">
-            <input type="text" id="video-url-input" placeholder="Enter MP4, WebM, or HLS stream URL (e.g. https://.../movie.mp4)" />
-            <button id="load-url-btn" class="btn btn-primary">Load Video</button>
+          <!-- URL Drawer -->
+          <div class="source-panel tab-content" id="url-mode">
+            <div class="input-action-row">
+              <input type="text" id="video-url-input" class="modern-input" placeholder="Paste direct MP4, WebM, or HLS stream URL (e.g. https://.../movie.mp4)" />
+              <button id="load-url-btn" class="btn-primary-action">Load Video</button>
+            </div>
           </div>
 
-          <div class="tab-content hidden" id="file-mode">
-            <div class="file-options">
-              <label class="file-picker-label btn btn-primary btn-sm">
-                📂 Select Video File
+          <!-- Local File Drawer -->
+          <div class="source-panel tab-content hidden" id="file-mode">
+            <div class="file-picker-row">
+              <label class="btn-file-select">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                <span>Select File</span>
                 <input type="file" id="local-file-input" accept="video/*" />
               </label>
-              <span class="divider-text">OR</span>
-              <input type="text" id="local-path-input" placeholder="Enter absolute file path (e.g. /Users/.../movie.mp4)" />
-              <button id="load-path-btn" class="btn btn-secondary btn-sm">Load Path</button>
+              <span class="or-separator">OR</span>
+              <input type="text" id="local-path-input" class="modern-input" placeholder="Enter absolute Mac path (e.g. /Users/.../movie.mp4)" />
+              <button id="load-path-btn" class="btn-secondary-action">Load Path</button>
             </div>
             <div class="file-status-row">
               <div id="upload-progress-container" class="upload-progress hidden">
                 <div class="upload-bar" id="upload-bar"></div>
                 <span id="upload-percent">0%</span>
               </div>
-              <span id="selected-file-name" class="hint-text">Select a video file to stream directly to all room participants in native 1080p/4K.</span>
+              <span id="selected-file-name" class="hint-text">Select a video file to stream directly to all room participants in native 1080p/4K via HTTP 206 Range.</span>
             </div>
           </div>
 
-          <div class="tab-content hidden" id="ott-mode">
-            <div class="ott-badge-list">
-              <span class="ott-chip">Netflix</span>
-              <span class="ott-chip">YouTube</span>
-              <span class="ott-chip">Prime Video</span>
-              <span class="ott-chip">Disney+ Hotstar</span>
+          <!-- OTT Sync Drawer -->
+          <div class="source-panel tab-content hidden" id="ott-mode">
+            <div class="ott-sync-row">
+              <div class="ott-chip-list">
+                <span class="ott-chip">Netflix</span>
+                <span class="ott-chip">YouTube</span>
+                <span class="ott-chip">Prime Video</span>
+                <span class="ott-chip">Disney+</span>
+              </div>
+              <p class="ott-tip">Install the WatchParty Pro companion extension to sync OTT platforms directly inside your native subscription account with 4K/HDR.</p>
             </div>
-            <p class="ott-instructions">
-              For DRM-protected streaming, install our companion extension to sync directly inside your OTT account with native 4K/Dolby quality.
-            </p>
           </div>
         </div>
 
-        <!-- Video Player Viewport -->
-        <div class="player-container" id="player-container">
-          <video id="main-video" playsinline preload="auto"></video>
+        <!-- Cinema Viewport Stage -->
+        <div class="viewport-stage-wrap">
+          <div class="ambient-glow"></div>
           
-          <div class="video-overlay-msg hidden" id="overlay-msg">
-            <span id="overlay-text">Video Paused</span>
-          </div>
-
-          <!-- Video Custom Controls -->
-          <div class="player-controls">
-            <div class="progress-bar-container" id="progress-container">
-              <div class="progress-buffered" id="buffered-bar"></div>
-              <div class="progress-current" id="current-progress"></div>
+          <div class="player-container" id="player-container">
+            <video id="main-video" playsinline preload="auto"></video>
+            
+            <div class="video-overlay-msg hidden" id="overlay-msg">
+              <span id="overlay-text">Video Paused</span>
             </div>
 
-            <div class="controls-row">
-              <div class="controls-left">
-                <button id="play-pause-btn" class="ctrl-btn" title="Play/Pause">▶</button>
-                <button id="mute-btn" class="ctrl-btn" title="Mute/Unmute">🔊</button>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" class="slider" />
-                <span id="time-display" class="time-label">00:00 / 00:00</span>
+            <!-- Floating Glassmorphism Player Controls Bar -->
+            <div class="floating-controls-bar">
+              <!-- Play / Pause Circular Glowing Button -->
+              <button id="play-pause-btn" class="ctrl-circle-btn" title="Play/Pause">
+                <svg id="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg id="pause-icon" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+              </button>
+
+              <!-- Timestamp -->
+              <span id="time-display" class="time-label">00:00:00 / 00:00:00</span>
+
+              <!-- Seek Progress Bar -->
+              <div class="progress-bar-container" id="progress-container">
+                <div class="progress-buffered" id="buffered-bar"></div>
+                <div class="progress-current" id="current-progress">
+                  <div class="progress-knob"></div>
+                </div>
               </div>
 
-              <div class="controls-right">
-                <div class="sync-badge" id="sync-status" title="Sync Status and Drift">
-                  <span class="sync-dot"></span>
-                  <span id="sync-drift-label">Sync: &lt;50ms</span>
-                </div>
-                <select id="playback-rate-select" class="dropdown-ctrl">
-                  <option value="0.75">0.75x</option>
-                  <option value="1.0" selected>1.0x</option>
-                  <option value="1.25">1.25x</option>
-                  <option value="1.5">1.5x</option>
-                  <option value="2.0">2.0x</option>
-                </select>
-                <button id="fullscreen-btn" class="ctrl-btn" title="Fullscreen">⛶</button>
+              <!-- Live Drift Precision Pill -->
+              <div class="sync-badge" id="sync-status" title="Sync Status and Drift">
+                <span class="sync-dot"></span>
+                <span id="sync-drift-label">&lt;25ms Sync</span>
               </div>
+
+              <!-- Volume Group -->
+              <div class="volume-group">
+                <span id="volume-percent" class="volume-percent-label">100%</span>
+                <button id="mute-btn" class="ctrl-icon-btn" title="Mute/Unmute">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" class="slider" />
+              </div>
+
+              <!-- Speed Dropdown -->
+              <select id="playback-rate-select" class="dropdown-speed-ctrl" title="Playback Speed">
+                <option value="0.75">0.75x</option>
+                <option value="1.0" selected>1.0x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2.0">2.0x</option>
+              </select>
+
+              <!-- Fullscreen Button -->
+              <button id="fullscreen-btn" class="ctrl-icon-btn" title="Toggle Fullscreen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Audio Ducking & Audio Engine Controls -->
-        <div class="ducking-bar">
-          <div class="ducking-info">
-            <span class="icon">🎙️</span>
-            <strong>Smart Voice Ducking:</strong>
-            <span class="description">Automatically lowers movie audio when friends speak</span>
+        <!-- Audio Ducking Status Dashboard -->
+        <div class="ducking-dashboard-card">
+          <div class="ducking-col waveform-col">
+            <div class="col-header">
+              <span class="col-title">Voice Energy Meter</span>
+              <span id="ducking-indicator" class="ducking-status-pill">Active Ducking</span>
+            </div>
+            <div class="waveform-canvas-wrapper">
+              <canvas id="ducking-waveform" width="380" height="38"></canvas>
+            </div>
           </div>
-          <div class="ducking-controls">
-            <label>
-              Ducking:
-              <input type="range" id="ducking-amount" min="0.1" max="0.8" step="0.05" value="0.4" class="slider slider-sm" />
-              <span id="ducking-amount-label">40%</span>
-            </label>
-            <div id="ducking-indicator" class="ducking-led" title="Active Ducking Status">DUCKING</div>
+
+          <div class="ducking-col sensitivity-col">
+            <div class="col-header">
+              <span class="col-title">Sensitivity</span>
+              <span class="adaptive-pill">Adaptive</span>
+            </div>
+            <div class="slider-val-row">
+              <input type="range" id="ducking-amount" min="0.1" max="0.8" step="0.05" value="0.4" class="slider" />
+              <span id="ducking-amount-label" class="slider-val-label">40%</span>
+            </div>
+          </div>
+
+          <div class="ducking-col quick-actions-col">
+            <div class="col-header">
+              <span class="col-title">Mute Others</span>
+            </div>
+            <div class="quick-toggles-row">
+              <label class="switch-toggle" title="Toggle Audio Attenuation">
+                <input type="checkbox" id="ducking-enable-toggle" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Right Social Sidebar: Video Mesh & Chat -->
+      <!-- Right: Social Sidebar (Video Mesh & Room Chat) -->
       <aside class="social-sidebar">
-        <!-- Voice & Video Grid -->
-        <div class="webrtc-section">
-          <div class="sidebar-header">
-            <h3>Live Friends (<span id="member-count">1</span>)</h3>
-            <div class="av-controls">
-              <button id="toggle-mic-btn" class="av-btn active" title="Toggle Microphone">🎤 Mic</button>
-              <button id="toggle-cam-btn" class="av-btn active" title="Toggle Camera">📹 Cam</button>
+        <!-- Live Friends Video Grid Section -->
+        <div class="social-video-section">
+          <div class="section-title-row">
+            <h3 class="section-title">Live Friends</h3>
+            <div class="av-quick-controls">
+              <button id="toggle-mic-btn" class="av-btn active" title="Toggle Microphone">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                <span>Mic</span>
+              </button>
+              <button id="toggle-cam-btn" class="av-btn active" title="Toggle Camera">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                <span>Cam</span>
+              </button>
             </div>
           </div>
 
-          <div class="video-grid" id="video-grid">
+          <!-- 2x2 Video Tiles Grid -->
+          <div class="video-grid-2x2" id="video-grid">
             <!-- Local User Stream Card -->
             <div class="video-card local-card" id="local-video-card">
               <video id="local-video" autoplay muted playsinline></video>
-              <div class="stream-badge">You</div>
+              <div class="video-card-meta">
+                <div class="user-info">
+                  <span class="meta-name">You</span>
+                  <span class="meta-status">Active</span>
+                </div>
+                <div class="meta-mic-icon active" title="Mic Active">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path></svg>
+                </div>
+              </div>
               <div class="speaking-meter" id="local-meter"></div>
             </div>
-            <!-- Remote peers dynamically appended here -->
+            <!-- Remote participant cards dynamically injected here -->
           </div>
         </div>
 
-        <!-- Chat & Real-Time Event Log -->
-        <div class="chat-section">
-          <div class="chat-header">
-            <h3>Room Chat</h3>
+        <!-- Real-Time Room Chat Section -->
+        <div class="social-chat-section">
+          <div class="chat-section-header">
+            <h3 class="section-title">Real-time Room Chat</h3>
           </div>
 
           <div class="chat-feed" id="chat-feed">
-            <div class="system-message">
-              <span>Welcome to your watch party! Paste a URL or select a local movie file to begin.</span>
+            <div class="chat-system-entry">
+              <span>Welcome to WatchParty Pro! Paste a URL or select a local movie file to begin.</span>
             </div>
           </div>
 
-          <form id="chat-form" class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Type a message or reaction..." autocomplete="off" />
-            <button type="submit" class="btn btn-primary btn-sm">Send</button>
+          <!-- Chat Input Area -->
+          <form id="chat-form" class="chat-form-area">
+            <input type="text" id="chat-input" class="chat-text-input" placeholder="Message the room..." autocomplete="off" />
+            <div class="chat-actions-row">
+              <div class="emoji-shortcuts">
+                <button type="button" class="emoji-btn" data-emoji="🍿">🍿</button>
+                <button type="button" class="emoji-btn" data-emoji="🔥">🔥</button>
+                <button type="button" class="emoji-btn" data-emoji="👏">👏</button>
+              </div>
+              <button type="submit" class="btn-chat-send" title="Send Message">
+                <span>Send</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
           </form>
         </div>
       </aside>
