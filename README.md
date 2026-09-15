@@ -1,6 +1,6 @@
 <div align="center">
 
-![WatchParty Pro Banner](assets/banner.svg)
+![WatchParty Pro Banner](assets/banner.png)
 
 # WatchParty Pro
 **Zero-Degradation Collaborative Cinema & Spatial Voice Platform**

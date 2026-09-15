@@ -15,7 +15,7 @@
    - Added `/api/upload` (streamed chunk uploader) and `/api/load-local-path` (instant local path linking with zero copy overhead).
    - Verified that multi-window and incognito sessions can now scrub, seek, and stream the same local file in 4K/HDR with sub-200ms synchronization.
 2. **Open Source & Governance Framework:**
-   - Created official project banner (`assets/banner.svg` and `docs/banner.svg`).
+   - Created official project banners (`assets/banner.png` high-res visual banner and `assets/banner.svg` vector version).
    - Added `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `ARCHITECTURE.md`.
    - Created `AI_DISCLOSURE.md` detailing human-in-the-loop AI engineering and contribution standards.
    - Added GitHub issue templates (bug report, feature request) and PR template.
