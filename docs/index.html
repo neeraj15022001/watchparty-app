@@ -8,25 +8,41 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Sticky Glass Navigation -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="#" class="nav-brand">
-        <span class="badge-pro">PRO</span>
-        <span class="brand-text">WatchParty</span>
+        <svg class="brand-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7C4 5.34315 5.34315 4 7 4H21C22.6569 4 24 5.34315 24 7V21C24 22.6569 22.6569 24 21 24H7C5.34315 24 4 22.6569 4 21V7Z" fill="#131622" stroke="#232738" stroke-width="1.5"/>
+          <path d="M7 9.5L10.5 18.5L14 11.5L17.5 18.5L21 9.5" stroke="url(#nav-logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="nav-logo-grad" x1="7" y1="9.5" x2="21" y2="18.5" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#38bdf8"/>
+              <stop offset="1" stop-color="#818cf8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-text">WatchParty <span class="brand-gradient-pro">Pro</span></span>
       </a>
+
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#architecture">Architecture</a>
         <a href="#comparison">Comparison</a>
         <a href="#quickstart">Quickstart</a>
         <a href="#changelog">Changelog</a>
+      </div>
+
+      <div class="nav-actions">
         <a href="https://github.com/neeraj15022001/watchparty-app" target="_blank" rel="noopener" class="btn btn-github">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>Star on GitHub</span>
+          <span class="github-star-count">★ Star</span>
         </a>
       </div>
     </div>
@@ -34,25 +50,38 @@
 
   <!-- Hero Section -->
   <header class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="ping-dot"></span> Open Source &bull; Zero Server Transcoding
-      </div>
-      <h1 class="hero-title">
-        The Watch Party Platform That <br/>
-        <span class="gradient-text">Never Compresses Your Video</span>
-      </h1>
-      <p class="hero-subtitle">
-        Say goodbye to blurry 720p re-encoded streams. WatchParty Pro delivers pristine, native 4K/HDR synchronized streaming for Netflix, YouTube, direct URLs, and local files—complete with real-time WebRTC voice/video and smart voice ducking.
-      </p>
-      <div class="hero-actions">
-        <a href="#quickstart" class="btn btn-primary btn-lg">Get Started in 60 Seconds</a>
-        <a href="#architecture" class="btn btn-secondary btn-lg">How It Works</a>
+    <div class="hero-container">
+      <div class="hero-text-block">
+        <div class="hero-badge">
+          <span class="ping-dot"></span>
+          <span>Open Source &bull; Zero Server Transcoding</span>
+        </div>
+
+        <h1 class="hero-title">
+          The Watch Party Platform That <br/>
+          <span class="gradient-headline">Never Compresses Your Video</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Synchronized, high-fidelity collaborative cinema without quality compromise. Experience native 4K/HDR synchronized playback for Netflix, YouTube, direct URLs, and local files—complete with real-time WebRTC voice/video and smart voice ducking.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#quickstart" class="btn btn-primary btn-lg">Get Started in 60 Seconds</a>
+          <a href="#architecture" class="btn btn-secondary btn-lg">How It Works</a>
+        </div>
       </div>
 
-      <!-- Hero Banner Display -->
-      <div class="banner-wrapper">
-        <img src="banner.png" alt="WatchParty Pro Hero Banner" class="hero-banner-img" />
+      <!-- Hero Showcase Display (3D Cinema Mockup Card) -->
+      <div class="hero-showcase-wrapper">
+        <div class="showcase-glow"></div>
+        <div class="showcase-card">
+          <img src="banner.png" alt="WatchParty Pro Cinema UI Showcase" class="showcase-img" />
+          <div class="showcase-badge-pill">
+            <span class="pulse-dot"></span>
+            <span>Sub-25ms Precision Sync &bull; 4K / HDR DRM</span>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -61,63 +90,88 @@
   <section id="features" class="section">
     <div class="container">
       <div class="section-header">
+        <span class="section-eyebrow">CAPABILITIES</span>
         <h2 class="section-title">Engineered for Perfectionists</h2>
-        <p class="section-desc">Why settle for pixelated screen captures when you can stream at original quality?</p>
+        <p class="section-desc">Why settle for blurry 720p screen recordings when you can stream at original master quality?</p>
       </div>
 
       <div class="feature-grid">
         <!-- Feature 1 -->
         <div class="feature-card">
-          <div class="feature-icon bg-indigo">🍿</div>
+          <div class="feature-card-glow cyan-glow"></div>
+          <div class="feature-icon-box bg-cyan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          </div>
           <h3>Native 4K / HDR OTT Sync</h3>
           <p>
-            Hooks directly into your authenticated Netflix, YouTube, or Prime Video player via a lightweight Manifest V3 extension. You get official CDN bitrates, Dolby Vision, and HDR10 untouched.
+            Hooks directly into your authenticated Netflix, YouTube, or Prime Video player via a companion extension. You get official CDN bitrates, Dolby Vision, and HDR10 untouched.
           </p>
+          <div class="feature-tag">Uncompromised Quality</div>
         </div>
 
         <!-- Feature 2 -->
         <div class="feature-card">
-          <div class="feature-icon bg-green">⚡</div>
+          <div class="feature-card-glow green-glow"></div>
+          <div class="feature-icon-box bg-green">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+          </div>
           <h3>HTTP 206 Range Streaming</h3>
           <p>
-            Load local movie files on your machine with zero server re-encoding. Our server handles HTTP 206 Partial Content byte ranges, giving all room participants instant timeline scrubbing and multi-gigabyte seekability.
+            Load local movie files on your host machine with zero transcoding overhead. The server streams HTTP 206 Partial Content byte ranges for instant seeking across multi-gigabyte 4K files.
           </p>
+          <div class="feature-tag">Zero Server Re-encoding</div>
         </div>
 
         <!-- Feature 3 -->
         <div class="feature-card">
-          <div class="feature-icon bg-pink">⏱️</div>
+          <div class="feature-card-glow indigo-glow"></div>
+          <div class="feature-icon-box bg-indigo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
           <h3>Sub-200ms NTP Drift Control</h3>
           <p>
-            Implements Cristian's algorithm over WebSockets to calculate network latency and hardware clock skew. Soft speed-nudge (0.95x–1.05x) keeps everyone in imperceptible sync without jarring jumps.
+            Implements Cristian's algorithm over WebSockets to calculate network latency and hardware clock skew. Continuous rate steering (0.95x–1.05x) keeps everyone in imperceptible sync without jarring jumps.
           </p>
+          <div class="feature-tag">&lt;25ms Drift Target</div>
         </div>
 
         <!-- Feature 4 -->
         <div class="feature-card">
-          <div class="feature-icon bg-amber">🎙️</div>
-          <h3>Smart Voice Ducking</h3>
+          <div class="feature-card-glow purple-glow"></div>
+          <div class="feature-icon-box bg-purple">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+          <h3>Smart Voice Ducking & Waveform</h3>
           <p>
-            Powered by the Web Audio API. When a friend speaks into their microphone, the movie volume gently attenuates by 40% so you can hear each other, smoothly restoring full volume when speech finishes.
+            Powered by the Web Audio API. Real-time Fourier energy analysis gently lowers movie volume by 40% when friends speak, visually reflected on an animated waveform visualizer.
           </p>
+          <div class="feature-tag">Web Audio API</div>
         </div>
 
         <!-- Feature 5 -->
         <div class="feature-card">
-          <div class="feature-icon bg-blue">📹</div>
+          <div class="feature-card-glow pink-glow"></div>
+          <div class="feature-icon-box bg-pink">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          </div>
           <h3>Decoupled WebRTC Mesh</h3>
           <p>
-            Audio and video communication runs on an independent WebRTC peer-to-peer layer with hardware echo cancellation and noise suppression. Network blips on webcams never interrupt movie playback.
+            Audio and video communication runs on an independent WebRTC peer-to-peer layer with hardware echo cancellation and noise suppression. Network hiccups on webcams never buffer movie playback.
           </p>
+          <div class="feature-tag">Decoupled Architecture</div>
         </div>
 
         <!-- Feature 6 -->
         <div class="feature-card">
-          <div class="feature-icon bg-purple">🛡️</div>
-          <h3>Zero Dependencies</h3>
+          <div class="feature-card-glow amber-glow"></div>
+          <div class="feature-icon-box bg-amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <h3>Zero Dependencies (Pure Python)</h3>
           <p>
-            The backend is written in pure Python 3 using standard library <code>asyncio</code> and <code>socket</code>. No <code>npm install</code>, no heavy pip dependencies, no container bloat. Just run and watch.
+            The backend signaling and media server is written in pure Python 3 using standard library <code>asyncio</code> and <code>socket</code>. No <code>npm install</code>, no pip bloat, no complex prerequisites.
           </p>
+          <div class="feature-tag">Standard Library Only</div>
         </div>
       </div>
     </div>
@@ -127,8 +181,9 @@
   <section id="architecture" class="section bg-alt">
     <div class="container">
       <div class="section-header">
+        <span class="section-eyebrow">UNDER THE HOOD</span>
         <h2 class="section-title">System Architecture</h2>
-        <p class="section-desc">Decoupled media pipelines prevent communication jitter from impacting cinema playback.</p>
+        <p class="section-desc">Decoupled media pipelines prevent communication bandwidth spikes from degrading cinema playback.</p>
       </div>
 
       <div class="architecture-box">
@@ -162,8 +217,9 @@
   <section id="comparison" class="section">
     <div class="container">
       <div class="section-header">
+        <span class="section-eyebrow">BENCHMARK</span>
         <h2 class="section-title">How WatchParty Pro Compares</h2>
-        <p class="section-desc">Why state synchronization outperforms virtual browsers every single time.</p>
+        <p class="section-desc">Why state synchronization outperforms virtual-browser screen re-encoding every single time.</p>
       </div>
 
       <div class="table-container">
@@ -180,29 +236,29 @@
             <tr>
               <td><strong>Video Quality</strong></td>
               <td>Pristine (Native OTT)</td>
-              <td class="text-danger">Degraded (Re-encoded WebRTC)</td>
+              <td class="text-danger">Degraded (Re-encoded 720p)</td>
               <td class="highlight-cell text-success"><strong>Pristine (Native 4K / HDR)</strong></td>
             </tr>
             <tr>
               <td><strong>Local Video Files</strong></td>
               <td class="text-danger">Not Supported</td>
-              <td>Supported (Re-encoded)</td>
+              <td>Supported (Transcoded)</td>
               <td class="highlight-cell text-success"><strong>Supported (HTTP 206 Range Stream)</strong></td>
             </tr>
             <tr>
-              <td><strong>Integrated Voice/Video</strong></td>
-              <td class="text-danger">No (Text chat only)</td>
+              <td><strong>Integrated Voice &amp; Video</strong></td>
+              <td class="text-danger">No (Text only)</td>
               <td>Yes</td>
-              <td class="highlight-cell text-success"><strong>Yes (WebRTC Mesh)</strong></td>
+              <td class="highlight-cell text-success"><strong>Yes (Decoupled WebRTC Mesh)</strong></td>
             </tr>
             <tr>
-              <td><strong>Smart Audio Ducking</strong></td>
+              <td><strong>Smart Voice Ducking</strong></td>
               <td class="text-danger">No</td>
               <td class="text-danger">No</td>
-              <td class="highlight-cell text-success"><strong>Yes (Web Audio API)</strong></td>
+              <td class="highlight-cell text-success"><strong>Yes (Web Audio API Waveform)</strong></td>
             </tr>
             <tr>
-              <td><strong>Server CPU &amp; Bandwidth Cost</strong></td>
+              <td><strong>Server Bandwidth Cost</strong></td>
               <td>Low</td>
               <td class="text-danger">Extremely High</td>
               <td class="highlight-cell text-success"><strong>Minimal (JSON + Direct Bytes)</strong></td>
@@ -210,7 +266,7 @@
             <tr>
               <td><strong>DRM / Widevine Compatibility</strong></td>
               <td>Supported</td>
-              <td class="text-danger">Often Black Screen</td>
+              <td class="text-danger">Frequent Black Screen</td>
               <td class="highlight-cell text-success"><strong>Fully Supported</strong></td>
             </tr>
           </tbody>
@@ -223,8 +279,9 @@
   <section id="quickstart" class="section bg-alt">
     <div class="container">
       <div class="section-header">
+        <span class="section-eyebrow">DEPLOYMENT</span>
         <h2 class="section-title">Quickstart Guide</h2>
-        <p class="section-desc">Up and running on your machine in under a minute.</p>
+        <p class="section-desc">Up and running on your machine in under a minute with zero installation friction.</p>
       </div>
 
       <div class="quickstart-steps">
@@ -271,26 +328,44 @@
   <section id="changelog" class="section">
     <div class="container">
       <div class="section-header">
+        <span class="section-eyebrow">RELEASES</span>
         <h2 class="section-title">Project Changelog</h2>
         <p class="section-desc">Documenting releases, architectural enhancements, and milestone updates.</p>
       </div>
 
       <div class="changelog-timeline">
-        <!-- Release v1.1.0 -->
+        <!-- Release v1.2.0 (New) -->
         <article class="changelog-entry">
           <div class="entry-meta">
-            <span class="version-badge latest">v1.1.0 (Latest)</span>
+            <span class="version-badge latest">v1.2.0 (Latest)</span>
             <time datetime="2026-09-16">September 16, 2026</time>
           </div>
           <div class="entry-content">
-            <h3>HTTP 206 Range Streaming &amp; Open Source Preparation</h3>
+            <h3>Agency-Grade Cinema UI Refactor &amp; Voice Waveform Visualizer</h3>
+            <ul>
+              <li><strong>Modern Cinema Design System:</strong> Refactored client interface to an obsidian dark theme (<code>#0d0f15</code>) with neon cyan/indigo accents and glassmorphism styling.</li>
+              <li><strong>Real-Time Voice Energy Waveform:</strong> Added dynamic HTML5 Canvas audio visualizer that smoothly transitions between ambient breathing sine waves and real-time speech frequencies.</li>
+              <li><strong>Floating Glassmorphism Controls:</strong> Replaced default media controls with floating glass bar, circular gradient play/pause button, and tabular timecode.</li>
+              <li><strong>Active Speaker Mesh Grid:</strong> Upgraded WebRTC participant tiles to a 2x2 grid with glowing cyan borders (<code>#38bdf8</code>) indicating active speakers.</li>
+              <li><strong>Segmented Media Source Selector:</strong> Modern pill switcher seamlessly navigating between direct Video URLs, Local File Range streaming, and OTT extension sync.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Release v1.1.0 -->
+        <article class="changelog-entry">
+          <div class="entry-meta">
+            <span class="version-badge">v1.1.0</span>
+            <time datetime="2026-09-16">September 16, 2026</time>
+          </div>
+          <div class="entry-content">
+            <h3>HTTP 206 Range Streaming &amp; Open Source Governance</h3>
             <ul>
               <li><strong>HTTP 206 Partial Content Engine:</strong> Added byte-range streaming in <code>server.py</code> to allow smooth timeline scrubbing and multi-tab seek synchronization for large local video files.</li>
               <li><strong>Local File Path Loader:</strong> Introduced <code>/api/load-local-path</code> for instant symlinking/copying of local machine video paths with zero upload latency.</li>
               <li><strong>Loopback Stream Uploader:</strong> Added <code>/api/upload</code> supporting real-time streaming file uploads with dynamic progress indication.</li>
               <li><strong>Open Source Governance:</strong> Added comprehensive MIT License, Contributing Guide, Security Policy, Code of Conduct, and GitHub Issue/PR templates.</li>
               <li><strong>AI Transparency Disclosure:</strong> Published <code>AI_DISCLOSURE.md</code> outlining human-in-the-loop AI engineering methodology.</li>
-              <li><strong>GitHub Pages Deployment:</strong> Created automated GitHub Actions workflow to publish project website and changelog.</li>
             </ul>
           </div>
         </article>
@@ -321,7 +396,7 @@
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-left">
-        <span class="brand-text">WatchParty <strong>PRO</strong></span>
+        <span class="brand-text">WatchParty <strong class="brand-gradient-pro">PRO</strong></span>
         <p>Created by Neeraj Gupta &bull; Licensed under MIT &bull; Open Source</p>
       </div>
       <div class="footer-right">

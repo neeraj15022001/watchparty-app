@@ -21,7 +21,8 @@
    - Added GitHub issue templates (bug report, feature request) and PR template.
 3. **Landing Page & Changelog Website:**
    - Created modern responsive landing page in `docs/` (`index.html`, `style.css`, `app.js`).
-   - Integrated live Changelog timeline documenting v1.0.0 and v1.1.0 releases.
+   - Upgraded to agency-grade dark obsidian showcase with neon cyan/indigo gradients, sticky glass navbar with GitHub star button, 3D product showcase card with ambient backglow, luminous feature grid, and live comparison table.
+   - Integrated live Changelog timeline documenting v1.0.0, v1.1.0, and v1.2.0 releases.
    - Added GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) for automatic deployment to GitHub Pages.
 4. **Frontend UI Redesign & Refactoring:**
    - Applied `@openai-frontend-design` methodology (`SKILL (1).md`) to transform `public/` into an agency-grade 10/10 design.
