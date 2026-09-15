@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WatchParty Pro | Zero-Degradation Collaborative Cinema</title>
+  <meta name="description" content="Watch movies together in native 4K/HDR with friends. Direct OTT sync, HTTP Range local file streaming, WebRTC voice/video, and smart audio ducking." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <span class="badge-pro">PRO</span>
+        <span class="brand-text">WatchParty</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#comparison">Comparison</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#changelog">Changelog</a>
+        <a href="https://github.com/neeraj15022001/watchparty-app" target="_blank" rel="noopener" class="btn btn-github">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="ping-dot"></span> Open Source &bull; Zero Server Transcoding
+      </div>
+      <h1 class="hero-title">
+        The Watch Party Platform That <br/>
+        <span class="gradient-text">Never Compresses Your Video</span>
+      </h1>
+      <p class="hero-subtitle">
+        Say goodbye to blurry 720p re-encoded streams. WatchParty Pro delivers pristine, native 4K/HDR synchronized streaming for Netflix, YouTube, direct URLs, and local files—complete with real-time WebRTC voice/video and smart voice ducking.
+      </p>
+      <div class="hero-actions">
+        <a href="#quickstart" class="btn btn-primary btn-lg">Get Started in 60 Seconds</a>
+        <a href="#architecture" class="btn btn-secondary btn-lg">How It Works</a>
+      </div>
+
+      <!-- Hero Banner Display -->
+      <div class="banner-wrapper">
+        <img src="banner.svg" alt="WatchParty Pro Hero Banner" class="hero-banner-img" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Key Architectural Pillars -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Engineered for Perfectionists</h2>
+        <p class="section-desc">Why settle for pixelated screen captures when you can stream at original quality?</p>
+      </div>
+
+      <div class="feature-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-indigo">🍿</div>
+          <h3>Native 4K / HDR OTT Sync</h3>
+          <p>
+            Hooks directly into your authenticated Netflix, YouTube, or Prime Video player via a lightweight Manifest V3 extension. You get official CDN bitrates, Dolby Vision, and HDR10 untouched.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-green">⚡</div>
+          <h3>HTTP 206 Range Streaming</h3>
+          <p>
+            Load local movie files on your machine with zero server re-encoding. Our server handles HTTP 206 Partial Content byte ranges, giving all room participants instant timeline scrubbing and multi-gigabyte seekability.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-pink">⏱️</div>
+          <h3>Sub-200ms NTP Drift Control</h3>
+          <p>
+            Implements Cristian's algorithm over WebSockets to calculate network latency and hardware clock skew. Soft speed-nudge (0.95x–1.05x) keeps everyone in imperceptible sync without jarring jumps.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-amber">🎙️</div>
+          <h3>Smart Voice Ducking</h3>
+          <p>
+            Powered by the Web Audio API. When a friend speaks into their microphone, the movie volume gently attenuates by 40% so you can hear each other, smoothly restoring full volume when speech finishes.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-blue">📹</div>
+          <h3>Decoupled WebRTC Mesh</h3>
+          <p>
+            Audio and video communication runs on an independent WebRTC peer-to-peer layer with hardware echo cancellation and noise suppression. Network blips on webcams never interrupt movie playback.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="feature-icon bg-purple">🛡️</div>
+          <h3>Zero Dependencies</h3>
+          <p>
+            The backend is written in pure Python 3 using standard library <code>asyncio</code> and <code>socket</code>. No <code>npm install</code>, no heavy pip dependencies, no container bloat. Just run and watch.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Breakdown -->
+  <section id="architecture" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">System Architecture</h2>
+        <p class="section-desc">Decoupled media pipelines prevent communication jitter from impacting cinema playback.</p>
+      </div>
+
+      <div class="architecture-box">
+        <pre class="ascii-diagram">
++---------------------------------------------------------------------------------+
+|                                 CLIENT BROWSER                                  |
+|                                                                                 |
+|   +--------------------------+    +-----------------------------------------+   |
+|   |    Local Cinema App      |    |       Companion Browser Extension       |   |
+|   |                          |    |                                         |   |
+|   |  - WebRTC Video/Audio    |    |  - Hooks Player DOM (Netflix, Prime)    |   |
+|   |  - Audio Ducking Engine  |    |  - Intercepts play/pause/seek events    |   |
+|   |  - HTTP Range Player     |    |  - NTP Clock Synchronization            |   |
+|   +------------+-------------+    +--------------------+--------------------+   |
++----------------|---------------------------------------|------------------------+
+                 |                                       |
+                 | Media / WebRTC Tracks                 | JSON Sync Packets
+                 v                                       v
++--------------------------------+      +-----------------------------------------+
+|     WebRTC Media Layer         |      |     Signaling & Range Server (Python)   |
+|  - Peer-to-Peer Mesh           |      |  - WebSocket Room State Machine         |
+|  - Echo Cancellation (AEC)     |      |  - Cristian's Algorithm (&lt;15ms routing)|
+|  - Decoupled from Video Sync   |      |  - HTTP 206 Partial Content Streaming   |
++--------------------------------+      +-----------------------------------------+
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section id="comparison" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How WatchParty Pro Compares</h2>
+        <p class="section-desc">Why state synchronization outperforms virtual browsers every single time.</p>
+      </div>
+
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Teleparty</th>
+              <th>watchparty.me</th>
+              <th class="highlight">WatchParty Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Video Quality</strong></td>
+              <td>Pristine (Native OTT)</td>
+              <td class="text-danger">Degraded (Re-encoded WebRTC)</td>
+              <td class="highlight-cell text-success"><strong>Pristine (Native 4K / HDR)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Local Video Files</strong></td>
+              <td class="text-danger">Not Supported</td>
+              <td>Supported (Re-encoded)</td>
+              <td class="highlight-cell text-success"><strong>Supported (HTTP 206 Range Stream)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Integrated Voice/Video</strong></td>
+              <td class="text-danger">No (Text chat only)</td>
+              <td>Yes</td>
+              <td class="highlight-cell text-success"><strong>Yes (WebRTC Mesh)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Smart Audio Ducking</strong></td>
+              <td class="text-danger">No</td>
+              <td class="text-danger">No</td>
+              <td class="highlight-cell text-success"><strong>Yes (Web Audio API)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Server CPU &amp; Bandwidth Cost</strong></td>
+              <td>Low</td>
+              <td class="text-danger">Extremely High</td>
+              <td class="highlight-cell text-success"><strong>Minimal (JSON + Direct Bytes)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>DRM / Widevine Compatibility</strong></td>
+              <td>Supported</td>
+              <td class="text-danger">Often Black Screen</td>
+              <td class="highlight-cell text-success"><strong>Fully Supported</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quickstart Guide -->
+  <section id="quickstart" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Quickstart Guide</h2>
+        <p class="section-desc">Up and running on your machine in under a minute.</p>
+      </div>
+
+      <div class="quickstart-steps">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Clone the Repository</h3>
+          <div class="code-block">
+            <code>git clone https://github.com/neeraj15022001/watchparty-app.git</code>
+            <button class="copy-btn" data-code="git clone https://github.com/neeraj15022001/watchparty-app.git">Copy</button>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Launch the Python Server</h3>
+          <div class="code-block">
+            <code>cd watchparty-app &amp;&amp; python3 server.py</code>
+            <button class="copy-btn" data-code="cd watchparty-app && python3 server.py">Copy</button>
+          </div>
+          <p class="step-hint">Runs with zero dependencies on macOS, Linux, and Windows.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Open the Cinema Interface</h3>
+          <div class="code-block">
+            <code>http://localhost:8080/?room=cinema-night</code>
+          </div>
+          <p class="step-hint">Share the link with your friends on your local network or via Cloudflare Tunnel.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Load the Extension (Optional for OTT)</h3>
+          <p>
+            Navigate to <code>chrome://extensions</code> in Chrome/Brave/Edge, toggle <strong>Developer mode</strong>, click <strong>Load unpacked</strong>, and select the <code>extension/</code> folder.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Changelog Section -->
+  <section id="changelog" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Project Changelog</h2>
+        <p class="section-desc">Documenting releases, architectural enhancements, and milestone updates.</p>
+      </div>
+
+      <div class="changelog-timeline">
+        <!-- Release v1.1.0 -->
+        <article class="changelog-entry">
+          <div class="entry-meta">
+            <span class="version-badge latest">v1.1.0 (Latest)</span>
+            <time datetime="2026-09-16">September 16, 2026</time>
+          </div>
+          <div class="entry-content">
+            <h3>HTTP 206 Range Streaming &amp; Open Source Preparation</h3>
+            <ul>
+              <li><strong>HTTP 206 Partial Content Engine:</strong> Added byte-range streaming in <code>server.py</code> to allow smooth timeline scrubbing and multi-tab seek synchronization for large local video files.</li>
+              <li><strong>Local File Path Loader:</strong> Introduced <code>/api/load-local-path</code> for instant symlinking/copying of local machine video paths with zero upload latency.</li>
+              <li><strong>Loopback Stream Uploader:</strong> Added <code>/api/upload</code> supporting real-time streaming file uploads with dynamic progress indication.</li>
+              <li><strong>Open Source Governance:</strong> Added comprehensive MIT License, Contributing Guide, Security Policy, Code of Conduct, and GitHub Issue/PR templates.</li>
+              <li><strong>AI Transparency Disclosure:</strong> Published <code>AI_DISCLOSURE.md</code> outlining human-in-the-loop AI engineering methodology.</li>
+              <li><strong>GitHub Pages Deployment:</strong> Created automated GitHub Actions workflow to publish project website and changelog.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Release v1.0.0 -->
+        <article class="changelog-entry">
+          <div class="entry-meta">
+            <span class="version-badge">v1.0.0</span>
+            <time datetime="2026-09-15">September 15, 2026</time>
+          </div>
+          <div class="entry-content">
+            <h3>Initial Core Engine Release</h3>
+            <ul>
+              <li><strong>Async Signaling Server:</strong> Pure Python zero-dependency RFC 6455 WebSocket server implementation.</li>
+              <li><strong>NTP Clock Synchronization:</strong> Implemented Cristian's algorithm to measure round-trip time and machine clock skew.</li>
+              <li><strong>Dynamic Playback Steering:</strong> Sub-200ms drift correction with smooth <code>playbackRate</code> adjustment (0.95x–1.05x).</li>
+              <li><strong>WebRTC Voice &amp; Video Mesh:</strong> Integrated peer-to-peer audio/video chat with hardware echo cancellation.</li>
+              <li><strong>Smart Voice Ducking:</strong> Web Audio API volume attenuation engine that automatically reduces movie volume during speech.</li>
+              <li><strong>Manifest V3 Companion Extension:</strong> Player event interceptor for Netflix, YouTube, and Prime Video.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <span class="brand-text">WatchParty <strong>PRO</strong></span>
+        <p>Created by Neeraj Gupta &bull; Licensed under MIT &bull; Open Source</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/neeraj15022001/watchparty-app" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="https://github.com/neeraj15022001/watchparty-app/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
+        <a href="https://github.com/neeraj15022001/watchparty-app/blob/main/SECURITY.md" target="_blank" rel="noopener">Security</a>
+        <a href="https://github.com/neeraj15022001/watchparty-app/blob/main/AI_DISCLOSURE.md" target="_blank" rel="noopener">AI Disclosure</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
