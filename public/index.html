@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchParty Pro - Synchronized Cinema & Voice</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app" class="cinema-layout">
+    <!-- Top Bar -->
+    <header class="top-nav">
+      <div class="logo-area">
+        <span class="brand-badge">PRO</span>
+        <h1>WatchParty</h1>
+      </div>
+
+      <div class="room-info">
+        <span class="status-indicator online"></span>
+        <span id="room-display">Room: Connecting...</span>
+        <button id="copy-room-btn" class="btn btn-secondary btn-sm" title="Copy Invite Link">
+          🔗 Copy Link
+        </button>
+      </div>
+
+      <div class="user-profile">
+        <span id="user-name-badge">Viewer</span>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Theater Center Stage -->
+      <section class="theater-stage">
+        <!-- Media Source Bar -->
+        <div class="source-bar">
+          <div class="source-tabs">
+            <button class="tab-btn active" data-tab="url-mode">🌐 Video URL</button>
+            <button class="tab-btn" data-tab="file-mode">📁 Local File & Path</button>
+            <button class="tab-btn" data-tab="ott-mode">🍿 OTT Sync (Netflix / Prime)</button>
+          </div>
+
+          <div class="tab-content" id="url-mode">
+            <input type="text" id="video-url-input" placeholder="Enter MP4, WebM, or HLS stream URL (e.g. https://.../movie.mp4)" />
+            <button id="load-url-btn" class="btn btn-primary">Load Video</button>
+          </div>
+
+          <div class="tab-content hidden" id="file-mode">
+            <div class="file-options">
+              <label class="file-picker-label btn btn-primary btn-sm">
+                📂 Select Video File
+                <input type="file" id="local-file-input" accept="video/*" />
+              </label>
+              <span class="divider-text">OR</span>
+              <input type="text" id="local-path-input" placeholder="Enter absolute file path (e.g. /Users/.../movie.mp4)" />
+              <button id="load-path-btn" class="btn btn-secondary btn-sm">Load Path</button>
+            </div>
+            <div class="file-status-row">
+              <div id="upload-progress-container" class="upload-progress hidden">
+                <div class="upload-bar" id="upload-bar"></div>
+                <span id="upload-percent">0%</span>
+              </div>
+              <span id="selected-file-name" class="hint-text">Select a video file to stream directly to all room participants in native 1080p/4K.</span>
+            </div>
+          </div>
+
+          <div class="tab-content hidden" id="ott-mode">
+            <div class="ott-badge-list">
+              <span class="ott-chip">Netflix</span>
+              <span class="ott-chip">YouTube</span>
+              <span class="ott-chip">Prime Video</span>
+              <span class="ott-chip">Disney+ Hotstar</span>
+            </div>
+            <p class="ott-instructions">
+              For DRM-protected streaming, install our companion extension to sync directly inside your OTT account with native 4K/Dolby quality.
+            </p>
+          </div>
+        </div>
+
+        <!-- Video Player Viewport -->
+        <div class="player-container" id="player-container">
+          <video id="main-video" playsinline preload="auto"></video>
+          
+          <div class="video-overlay-msg hidden" id="overlay-msg">
+            <span id="overlay-text">Video Paused</span>
+          </div>
+
+          <!-- Video Custom Controls -->
+          <div class="player-controls">
+            <div class="progress-bar-container" id="progress-container">
+              <div class="progress-buffered" id="buffered-bar"></div>
+              <div class="progress-current" id="current-progress"></div>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-left">
+                <button id="play-pause-btn" class="ctrl-btn" title="Play/Pause">▶</button>
+                <button id="mute-btn" class="ctrl-btn" title="Mute/Unmute">🔊</button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1" class="slider" />
+                <span id="time-display" class="time-label">00:00 / 00:00</span>
+              </div>
+
+              <div class="controls-right">
+                <div class="sync-badge" id="sync-status" title="Sync Status and Drift">
+                  <span class="sync-dot"></span>
+                  <span id="sync-drift-label">Sync: &lt;50ms</span>
+                </div>
+                <select id="playback-rate-select" class="dropdown-ctrl">
+                  <option value="0.75">0.75x</option>
+                  <option value="1.0" selected>1.0x</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2.0">2.0x</option>
+                </select>
+                <button id="fullscreen-btn" class="ctrl-btn" title="Fullscreen">⛶</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio Ducking & Audio Engine Controls -->
+        <div class="ducking-bar">
+          <div class="ducking-info">
+            <span class="icon">🎙️</span>
+            <strong>Smart Voice Ducking:</strong>
+            <span class="description">Automatically lowers movie audio when friends speak</span>
+          </div>
+          <div class="ducking-controls">
+            <label>
+              Ducking:
+              <input type="range" id="ducking-amount" min="0.1" max="0.8" step="0.05" value="0.4" class="slider slider-sm" />
+              <span id="ducking-amount-label">40%</span>
+            </label>
+            <div id="ducking-indicator" class="ducking-led" title="Active Ducking Status">DUCKING</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Social Sidebar: Video Mesh & Chat -->
+      <aside class="social-sidebar">
+        <!-- Voice & Video Grid -->
+        <div class="webrtc-section">
+          <div class="sidebar-header">
+            <h3>Live Friends (<span id="member-count">1</span>)</h3>
+            <div class="av-controls">
+              <button id="toggle-mic-btn" class="av-btn active" title="Toggle Microphone">🎤 Mic</button>
+              <button id="toggle-cam-btn" class="av-btn active" title="Toggle Camera">📹 Cam</button>
+            </div>
+          </div>
+
+          <div class="video-grid" id="video-grid">
+            <!-- Local User Stream Card -->
+            <div class="video-card local-card" id="local-video-card">
+              <video id="local-video" autoplay muted playsinline></video>
+              <div class="stream-badge">You</div>
+              <div class="speaking-meter" id="local-meter"></div>
+            </div>
+            <!-- Remote peers dynamically appended here -->
+          </div>
+        </div>
+
+        <!-- Chat & Real-Time Event Log -->
+        <div class="chat-section">
+          <div class="chat-header">
+            <h3>Room Chat</h3>
+          </div>
+
+          <div class="chat-feed" id="chat-feed">
+            <div class="system-message">
+              <span>Welcome to your watch party! Paste a URL or select a local movie file to begin.</span>
+            </div>
+          </div>
+
+          <form id="chat-form" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type a message or reaction..." autocomplete="off" />
+            <button type="submit" class="btn btn-primary btn-sm">Send</button>
+          </form>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

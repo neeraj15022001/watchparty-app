@@ -1,0 +1,14 @@
+# Ignore python cache
+__pycache__/
+*.pyc
+
+# Ignore media uploads and symlinks
+media/
+*.mp4
+*.mkv
+*.webm
+*.mov
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

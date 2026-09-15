@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "WatchParty Pro Sync",
+  "version": "1.0.0",
+  "description": "High-fidelity, zero-degradation synchronized watch party extension for Netflix, YouTube, and Prime Video.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.netflix.com/*",
+    "*://*.youtube.com/*",
+    "*://*.primevideo.com/*",
+    "ws://localhost:8080/*",
+    "http://localhost:8080/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "WatchParty Pro"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.netflix.com/*",
+        "*://*.youtube.com/*",
+        "*://*.primevideo.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
